@@ -50,5 +50,5 @@ plt.plot(win, lose, 'o') #以勝隊數值為 x 值，敗隊數值為 y 值
 plt.xlabel('勝隊數值')
 plt.ylabel('敗隊數值')
 plt.title('NBA 2021-2022 勝負隊 ' + metric + ' 數據')
-plt.savefig(f'NBA 2021-2022 勝負隊 + {metric} + 數據.png')
+plt.savefig(f'NBA 2021-2022 勝負隊 {metric} 數據.png')
 plt.show()
