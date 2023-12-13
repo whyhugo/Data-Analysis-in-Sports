@@ -7,11 +7,6 @@ from selenium.webdriver.common.by import By
 from lxml import etree
 import time
 
-url = input('URL:')
-driver = webdriver.Chrome('/programing/swiftx/chromedriver-win64/chromedriver.exe')
-html = driver.get(url)
-sp = soup(driver.page_source, 'html.parser')
-
 # get player name
 def get_player_name():
     player_list = []
@@ -94,29 +89,40 @@ def get_data():
 
     return data
 
-try:
-    df_list = []
-    while True:
-        sp = soup(driver.page_source, 'html.parser')
-        print('page start')
-        time.sleep(2)
-        name = get_player_name()
-        time.sleep(2)
-        position = get_player_position()
-        time.sleep(2)
-        current_data = get_data()
-        time.sleep(2)
-        for i in range(len(name)):
-            row = []
-            row.append(name[i])
-            row.append(position[i])
-            row.extend(current_data[i*32:i*32+32])
-            df_list.append(row)
-        click_next_page_button()
-except:
-    print('This is the last page :)')
+def run(link, year):
+    try:
+        df_list = []
+        while True:
+            sp = soup(driver.page_source, 'html.parser')
+            print('page start')
+            time.sleep(2)
+            name = get_player_name()
+            time.sleep(2)
+            position = get_player_position()
+            time.sleep(2)
+            current_data = get_data()
+            time.sleep(2)
+            for i in range(len(name)):
+                row = []
+                row.append(name[i])
+                row.append(position[i])
+                row.extend(current_data[i*32:i*32+32])
+                df_list.append(row)
+            click_next_page_button()
+    except:
+        df = pd.DataFrame(df_list, columns=get_column_name())
+        df.to_csv(f'mlb_stats/{link[26:-1]}_{year}.csv', index=False, encoding='utf-8')
+        print('This is the last page :)')
 
-df = pd.DataFrame(df_list, columns=get_column_name())
-df.to_csv('mlb_stats_test.csv', index=False, encoding='utf-8')
+urls = pd.read_csv('mlb_stats_urls.csv', encoding='utf-8')
+
+for year in range(2013, 2024):
+    for link in urls['link']:
+        url = link + str(year) + '?playerPool=ALL'
+        driver = webdriver.Chrome('/programing/swiftx/chromedriver-win64/chromedriver.exe')
+        html = driver.get(url)
+        sp = soup(driver.page_source, 'html.parser')
+
+        run(link, year)
 
 driver.quit()
