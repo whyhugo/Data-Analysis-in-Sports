@@ -2,12 +2,15 @@ import pandas as pd
 import time
 
 mlb_rank = pd.read_csv('mlb_stats/MLB_rank.csv', encoding='utf-8', index_col=0)
-urls = pd.read_csv('mlb_stats_urls/mlb_stats_urls.csv', encoding='utf-8')
 
 data_list = []
-for year in range(2013, 2014):
+for year in range(2013, 2024):
+    if year < 2022:
+        urls = pd.read_csv('mlb_stats_urls/mlb_stats_urls.csv', encoding='utf-8')
+    else:
+        urls = pd.read_csv('mlb_stats_urls/mlb_stats_urls_2022.csv', encoding='utf-8')
     for team_name in urls['link']:
-        print(team_name[26:-1])
+        print(year, team_name[26:-1])
         file = f'mlb_stats/{year}/{team_name[26:-1]}_{year}.csv'
         #time.sleep(1)
         df = pd.read_csv(file, encoding='utf-8')
