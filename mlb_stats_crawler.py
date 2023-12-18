@@ -25,7 +25,7 @@ def get_player_position():
 
 def get_column_name():
     click_standard_button()
-    sp = soup(driver.page_source, 'html.parser')
+    sp = soup(driver.page_source, 'lxml')
     
     data_column_name = ['PLAYER', 'POSITION', 'TEAM']
     temp = sp.find_all(class_ = 'bui-text cellheader bui-text')
@@ -36,7 +36,7 @@ def get_column_name():
         data_column_name.append(temp[i].text)
 
     click_expanded_button()
-    sp = soup(driver.page_source, 'html.parser')
+    sp = soup(driver.page_source, 'lxml')
     temp = sp.find_all(class_ = 'bui-text cellheader bui-text')
     for i in range(4, len(temp), 2):
         data_column_name.append(temp[i].text)
@@ -49,7 +49,7 @@ def click_standard_button():
     driver.find_element('xpath', '//*[@id="stats-app-root"]/section/section/div[1]/div[2]/div/div[1]/div/div[1]/button').click()
     driver.find_element('xpath', '//*[@id="stats-app-root"]/section/section/div[1]/div[2]/div/div[1]/div/div[1]/button').click()
     time.sleep(3)
-    sp = soup(driver.page_source, 'html.parser')
+    sp = soup(driver.page_source, 'lxml')
 
 # click expanded button
 def click_expanded_button():
@@ -63,21 +63,21 @@ def click_next_page_button():
     time.sleep(3)
     driver.find_element('xpath', '//*[@id="stats-app-root"]/section/section/div[3]/div[2]/div/div/div[2]/button').click()
     time.sleep(3)
-    sp = soup(driver.page_source, 'html.parser')
+    sp = soup(driver.page_source, 'lxml')
 
 # get standard data
 def get_data():
     data = []
     
     click_standard_button()
-    sp = soup(driver.page_source, 'html.parser')
+    sp = soup(driver.page_source, 'lxml')
     standard_data = []
     tt = sp.select('#stats-app-root tr td')
     for i in tt:
         standard_data.append(i.text)
     
     click_expanded_button()
-    sp = soup(driver.page_source, 'html.parser')
+    sp = soup(driver.page_source, 'lxml')
     expanded_data = []
     tt = sp.select('#stats-app-root tr td')
     for i in tt:
@@ -93,7 +93,7 @@ def run(link, year):
     try:
         df_list = []
         while True:
-            sp = soup(driver.page_source, 'html.parser')
+            sp = soup(driver.page_source, 'lxml')
             print('page start')
             time.sleep(2)
             name = get_player_name()
@@ -121,7 +121,7 @@ for year in range(2013, 2024):
         url = link + str(year) + '?playerPool=ALL'
         driver = webdriver.Chrome('/programing/swiftx/chromedriver-win64/chromedriver.exe')
         html = driver.get(url)
-        sp = soup(driver.page_source, 'html.parser')
+        sp = soup(driver.page_source, 'lxml')
 
         run(link, year)
 
