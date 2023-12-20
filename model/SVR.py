@@ -6,7 +6,7 @@ import seaborn as sns
 from scipy import stats
 import matplotlib.pyplot as plt
 
-data = pd.read_csv(r'D:\programing\swiftx\NTNU\Data Analysis in Sports\mlb_stats\data.csv')
+data = pd.read_csv(r'D:\programing\swiftx\NTNU\Data Analysis in Sports\mlb_stats\data_filter.csv')
 
 X = data.drop('RANK', axis=1)
 y = data['RANK']

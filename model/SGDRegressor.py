@@ -10,7 +10,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from scipy import stats
 from sklearn.metrics import explained_variance_score
 
-data = pd.read_csv(r'D:\programing\swiftx\NTNU\Data Analysis in Sports\mlb_stats\data.csv')
+data = pd.read_csv(r'D:\programing\swiftx\NTNU\Data Analysis in Sports\mlb_stats\data_filter.csv')
 
 X = data.drop('RANK', axis=1)
 y = data['RANK']

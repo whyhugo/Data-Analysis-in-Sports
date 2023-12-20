@@ -1,0 +1,6 @@
+Gradient Boosting Regressor
+Best Parameters: {'learning_rate': 0.5, 'max_depth': 6, 'n_estimators': 140}
+Mean Squared Error: 2.4730952156573167e-16
+Mean Absolute Error: 1.2533317787195586e-08
+R-squared: 1.0
+

@@ -7,24 +7,39 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from scipy import stats
 
-data = pd.read_csv(r'D:\programing\swiftx\NTNU\Data Analysis in Sports\mlb_stats\data.csv')
+data = pd.read_csv(r'D:\programing\swiftx\NTNU\Data Analysis in Sports\mlb_stats\data_filter.csv')
 
 X = data.drop('RANK', axis=1)
 y = data['RANK']
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=50)
 
-gb_regressor = GradientBoostingRegressor(random_state=42)
+gb_regressor = GradientBoostingRegressor(random_state=50)
 
 param_grid = {
-    'n_estimators': [50, 100, 150],
-    'learning_rate': [0.05, 0.1, 0.2],
-    'max_depth': [3, 4, 5]
+    'n_estimators': [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+    'learning_rate': [0.05, 0.1, 0.2, 0.3, 0.4, 0.5],
+    'max_depth': [2, 3, 4, 5, 6]
 }
 
 grid_search = GridSearchCV(estimator=gb_regressor, param_grid=param_grid, cv=5, scoring='neg_mean_squared_error', n_jobs=-1)
 
 grid_search.fit(X_train, y_train)
+
+##
+cv_results = pd.DataFrame(grid_search.cv_results_)
+plt.figure(figsize=(12, 6))
+
+for learning_rate in param_grid['learning_rate']:
+    mask = (cv_results['param_learning_rate'] == learning_rate)
+    plt.plot(cv_results['param_n_estimators'][mask], -cv_results['mean_test_score'][mask], label=f'learning_rate={learning_rate}')
+
+plt.xlabel('Number of Estimators')
+plt.ylabel('Negative Mean Squared Error')
+plt.legend(title='Learning Rate')
+plt.title('Grid Search Results')
+plt.show()
+##
 
 best_params = grid_search.best_params_
 print(f'Best Parameters: {best_params}')

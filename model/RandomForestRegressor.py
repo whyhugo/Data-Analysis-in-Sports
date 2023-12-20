@@ -6,14 +6,14 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from scipy import stats
 
-data = pd.read_csv(r'D:\programing\swiftx\NTNU\Data Analysis in Sports\mlb_stats\data.csv')
+data = pd.read_csv(r'D:\programing\swiftx\NTNU\Data Analysis in Sports\mlb_stats\data_filter.csv')
 
 X = data.drop('RANK', axis=1)
 y = data['RANK']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-rf_regressor = RandomForestRegressor(n_estimators=100, random_state=42)
+rf_regressor = RandomForestRegressor(n_estimators=50, random_state=42)
 
 rf_regressor.fit(X_train, y_train)
 
